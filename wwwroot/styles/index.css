@@ -168,6 +168,20 @@ nav {
     width: 90%;
 }
 
+#create-new-employee {
+    margin: 20px auto;
+}
+
+#create-new-employee .employee-footer {
+    height: 29px;
+}
+
+#button-create-new-employee {
+    font-size: 8ch;
+    font-style: bold;
+    color: #011c3f;
+}
+
 .employee-wrapper {
     display: flex;
     flex-direction: row;
@@ -227,7 +241,7 @@ nav {
     padding: 4px 8px;
     background-color: var(--employee-header-bg-color);
     text-align: left;
-    height: 40px;
+    height: 48px;
     border-top: 1px dashed var(--employee-border-color);
     color: var(--employee-border-color);
     font-size: xx-large;
@@ -242,7 +256,7 @@ nav {
     align-items: center;
 }
 
-.employee.prototype .roundimg {
+.employee .roundimg {
     display: inline-block;
     position: relative;
     width: 120px;
@@ -251,7 +265,7 @@ nav {
     border-radius: 50%;
 }
 
-.employee.prototype .roundimg img {
+.employee .roundimg img {
     overflow: hidden;
     position: absolute;
     left: 50%;
@@ -297,25 +311,11 @@ nav {
     flex-direction: column;
 }
 
-.employee-tooltip {
-    width: 70px;
-    border: 2px solid black;
-    position: relative;
-    top: 0px;
-    right: 0px;
-    height: auto;
-    color: var(--employee-tooltip-color);
-    float: right;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 300ms ease-in, opacity 300ms ease-in;
-}
-
-.employee.prototype:hover {
+.employee:hover {
     box-shadow: 0 0 10px var(--employee-box-shadow);
 }
 
-.employee.prototype:hover .employee-tooltip {
+.employee:hover .employee-tooltip {
     visibility: visible;
     opacity: 1;
     transition: visibility 300ms ease-out, opacity 300ms ease-out;
@@ -363,12 +363,14 @@ nav {
     justify-content: space-between;
     align-items: stretch;
     width: 100%;
+    padding-bottom: 4px;
 }
 
 #closeDetails {
     cursor: pointer;
-    padding-bottom: 4px;
-    padding-right: 4px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
 }
 
 .profile-picture {
@@ -449,6 +451,9 @@ nav {
     font-size: 3em;
     margin: 20px;
     cursor: pointer;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
 }
 
 .detail-footer {
@@ -460,11 +465,15 @@ nav {
     padding: 4px 8px;
     background-color: var(--employee-border-color);
     text-align: left;
-    height: 40px;
     width: 100%;
     border-top: 1px dashed var(--employee-border-color);
     color: white;
     font-size: xx-large;
+}
+
+.detail-footer .actions i {
+    padding: 2px;
+    font-size: 3ch;
 }
 
 footer {
@@ -501,6 +510,50 @@ footer {
 
 
 /* standard */
+
+.button {
+    border: 0;
+    outline: 0;
+    padding: 0.25rem 0.33rem;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button:hover {
+    box-shadow: 0px 15px 25px -5px #5d7a969a;
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+}
+
+.button:active {
+    box-shadow: 0px 4px 8px #445e7981;
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+}
+
+.button-light {
+    border: 0;
+    outline: 0;
+    padding: 0.25rem 0.33rem;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button-light:hover {
+    box-shadow: 0px 15px 25px -5px #cfdbe59a;
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+}
+
+.buttonlight:active {
+    box-shadow: 0px 4px 8px #969fa881;
+    -webkit-transform: scale(0.98);
+    transform: scale(0.98);
+}
 
 a {
     text-decoration: none;

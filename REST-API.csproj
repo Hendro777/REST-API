@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\script\**" />
+    <Content Remove="wwwroot\script\**" />
+    <EmbeddedResource Remove="wwwroot\script\**" />
+    <None Remove="wwwroot\script\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
@@ -20,7 +27,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\html\" />
     <Folder Include="wwwroot\resource\" />
-    <Folder Include="wwwroot\script\" />
     <Folder Include="wwwroot\styles\" />
   </ItemGroup>
 

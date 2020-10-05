@@ -3,7 +3,7 @@
     "REST_API": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:80, https://localhost:443",
+      "applicationUrl": "http://localhost:80",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

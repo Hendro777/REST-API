@@ -74,21 +74,13 @@ namespace REST_API
         [Route("new")]
         public IActionResult PostNewEmployee()
         {
-            Console.WriteLine("Post new Employee Request");
-            string firstname, lastname, birthdate;
-            firstname = Request.Query["FirstName"];
-            lastname = Request.Query["LastName"];
-            birthdate = Request.Query["BirthDate"];
-
-            if (string.IsNullOrEmpty(firstname) || string.IsNullOrEmpty(lastname) || string.IsNullOrEmpty(birthdate))
+            Console.WriteLine("POST Request - New Employee");
+            Employee newEmployee = empDB.CreateNewEmployee(Request.Form);
+            if (newEmployee == null)
             {
-                return BadRequest("Mandatory fields missing");
+                return BadRequest();
             }
-
-            Employee employee = new Employee(firstname, lastname, birthdate);
-            empDB.Add(employee);
-
-            return Ok(empDB);
+            return Ok(newEmployee);
         }
 
         /* */

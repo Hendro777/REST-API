@@ -78,20 +78,83 @@ function editEmployee(id, formdata) {
         });
 }
 
+function createNewEmployee(formdata) {
+    return fetch('http://localhost/api/employee/new', {
+            method: 'POST',
+            body: formdata
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.warn(res.status + ":" + res.statusText);
+            }
+        })
+        .then(data => {
+            return data;
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+}
 
-// Generate Div Element with data from Employee _______________________________________________________________________________________________________________________________________________________________
+
+
+// DOM Methods ______________________________________________________________________________________________________________________________________________________________________________________________
+
+// setupOverview 
+function setupOverview() {
+    getAllEmployees()
+        .then(response => {
+            let allEmployees = response.sort(Employee.sortByLastThenFirstName);
+            let employeeWrapper = document.getElementsByClassName("employee-wrapper")[0];
+
+            while (employeeWrapper.firstChild) {
+                employeeWrapper.removeChild(employeeWrapper.firstChild);
+            }
+
+            for (employee of allEmployees) {
+                let employeeTMP = new Employee(employee);
+                let employeeDivTMP = employeeDiv(employeeTMP);
+                employeeWrapper.append(employeeDivTMP);
+
+                let inputfields = document.getElementsByTagName("input");
+                controlInput(inputfields, false);
+
+                openDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("openDetails")[0];
+                openDetail.addEventListener("click", (event) => {
+                    id = event.target.getAttribute("employee-id");
+                    openDetails(id, false);
+                });
+
+                editDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("editDetails")[0];
+                editDetail.addEventListener("click", (event) => {
+                    id = event.target.getAttribute("employee-id");
+                    openDetails(id, true);
+                });
+
+                unfoldEmployee = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("unfoldEmployee")[0];
+                unfoldEmployee.addEventListener("click", (event) => {
+                    console.log("clicked unfold");
+                });
+            }
+        })
+        .catch(err => console.warn(err));
+}
+
+// Generate Div Element with data from Employee
 function employeeDiv(employee) {
     let employeeTMP = new Employee(employee);
     htmlString = `
-                            <div id='employee-${employeeTMP.id}' class='employee prototype'>
+                            <div id='employee-${employeeTMP.id}' class='employee'>
                                 <div class='employee-header'>
-                                    <div><i employee-id='${employeeTMP.id}' class='fas fa-user-circle openDetails'></i></div>
-                                    <p class='bold fullName'> ${employeeTMP.getFullName()}</p>
-                                    <div class='tooltip'><i employee-id='${employeeTMP.id}' class='far fa-edit editDetails'> | <i id='employee-unfold-${employeeTMP.id}' class='fas fa-chevron-down'></i></i>
+                                    <div><i employee-id='${employeeTMP.id}' class='fas fa-user-circle openDetails button'></i></div>
+                                    <p class='bold fullName button'> ${employeeTMP.getFullName()}</p>
+                                    <div class='tooltip'><i employee-id='${employeeTMP.id}' class='editDetails far fa-edit button'></i> | <i class='unfoldEmployee fas fa-chevron-down button'></i>
                                     </div>
                                 </div>
                                 <div class='employee-flex-wrapper'>
-                                    <div class='employee-img roundimg'> <img src='https://images.assetsdelivery.com/compings_v2/decade3d/decade3d1406/decade3d140600029.jpg' /></div>
+                                    <div class='employee-img roundimg button'> <img src='https://images.assetsdelivery.com/compings_v2/decade3d/decade3d1406/decade3d140600029.jpg' /></div>
 
                                     <div class='employee-data-wrapper'>
                                         <div class='employee-data'><label for='firstName'>Vorname</label><input name='firstName' value='${employeeTMP.firstName}'></input>
@@ -114,7 +177,7 @@ function employeeDiv(employee) {
                                     </div>
                                 </div>
                                 <div class='employee-footer'>
-                                    <div class='actions'><i class='fas fa-envelope-square'></i> <i class='fas fa-phone-square-alt'></i></div>
+                                    <div class='actions'><i class='fas fa-envelope-square button'></i> <i class='fas fa-phone-square-alt button'></i></div>
                                 </div>
                             </div>
                         `;
@@ -123,38 +186,47 @@ function employeeDiv(employee) {
     return div;
 }
 
+// Open Detailed View of Employee
+function openDetails(id = null, editmode = true) {
+    let employeeDetails = document.getElementById("employee-details");
+    let employeeForm = document.getElementById("employee-details-form");
+    let formFields = employeeForm.getElementsByTagName("input");
+    controlInput(formFields, editmode);
 
+    if (id == null) {
+        employeeDetails.getElementsByClassName("fullName")[0].innerHTML = "Neuer Mitarbeiter";
+        employeeForm.reset();
+        Array.from(employeeForm.getElementsByTagName("Input")).forEach(item => item.defaultValue = "");
+        employeeDetails.classList.add("active");
+        employeeForm.setAttribute("editmode", editmode);
+        document.getElementById("submitEmployee").setAttribute("editmode", editmode);
+    } else {
+        getEmployeeByID(id)
+            .then(response => {
+                let fieldsMap = new Map();
+                Array.prototype.map.call(formFields, function(field) {
+                    fieldsMap[field.getAttribute("Name")] = field;
+                });
 
-// Open Detailed View of Employee _____________________________________________________________________________________________________________________________________________________________________________
-function openDetails(id, editmode) {
-    getEmployeeByID(id)
-        .then(response => {
-            let employeeDetails = document.getElementById("employee-details");
-            let employeeForm = document.getElementById("employee-details-form");
-            let formFields = employeeForm.getElementsByTagName("input");
-            let fieldsMap = new Map();
-            Array.prototype.map.call(formFields, function(field) {
-                fieldsMap[field.getAttribute("Name")] = field;
-            });
-
-            employeeForm.reset();
-            let employeeTMP = new Employee(response);
-            employeeDetails.getElementsByClassName("fullName")[0].innerHTML = employeeTMP.getFullName();
-            for (const [key, value] of Object.entries(employeeTMP)) {
-                const field = fieldsMap[key];
-                if (field) {
-                    fieldsMap[key].defaultValue = value;
+                employeeForm.reset();
+                let employeeTMP = new Employee(response);
+                employeeDetails.getElementsByClassName("fullName")[0].innerHTML = employeeTMP.getFullName();
+                for (const [key, value] of Object.entries(employeeTMP)) {
+                    const field = fieldsMap[key];
+                    if (field) {
+                        fieldsMap[key].defaultValue = value;
+                    }
                 }
-            }
 
-            controlInput(formFields, editmode);
+                sessionStorage.setItem("DetailsCurrentEmployee", employeeTMP);
+                sessionStorage.setItem("DetailsUserID", employeeTMP.id);
 
-            sessionStorage.setItem("DetailsCurrentEmployee", employeeTMP);
-            sessionStorage.setItem("DetailsUserID", employeeTMP.id);
-            employeeDetails.classList.add("active");
-            employeeForm.setAttribute("editmode", editmode);
-            document.getElementById("submitEmployee").setAttribute("editmode", editmode);
-        });
+                employeeForm.reset();
+                employeeDetails.classList.add("active");
+                employeeForm.setAttribute("editmode", editmode);
+                document.getElementById("submitEmployee").setAttribute("editmode", editmode);
+            });
+    }
     return true;
 }
 
@@ -197,65 +269,65 @@ function toDataURL(url, callback) {
     xhr.send();
 }
 
+function jumpTo(h) {
+    var url = location.href; //Save down the URL without hash.
+    location.href = "#" + h; //Go to the target element.
+    history.replaceState(null, null, url); //Don't like hashes. Changing it back.
+    console.log("jumping to " + h);
+}
 
 // Prepare Page _______________________________________________________________________________________________________________________________________________________________________________________________
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM fully loaded and parsed");
 
-    getAllEmployees()
-        .then(response => {
-            let allEmployees = response.sort(Employee.sortByLastThenFirstName);
+    setupOverview();
 
-            for (employee of allEmployees) {
-                let employeeTMP = new Employee(employee);
-                let employeeDivTMP = employeeDiv(employeeTMP);
-                document.getElementsByClassName("employee-wrapper")[0].append(employeeDivTMP);
-
-                let inputfields = document.getElementsByTagName("input");
-                controlInput(inputfields, false);
-
-                openDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("openDetails")[0];
-                openDetail.addEventListener("click", function(event) {
-                    id = event.target.getAttribute("employee-id");
-                    openDetails(id, false);
-                });
-
-                editDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("editDetails")[0];
-                editDetail.addEventListener("click", function(event) {
-                    id = event.target.getAttribute("employee-id");
-                    openDetails(id, true);
-                });
-            }
-        })
-        .catch(err => console.warn(err));
-
-    document.getElementById("closeDetails").addEventListener("click", function(event) {
+    document.getElementById("closeDetails").addEventListener("click", (event) => {
         event.preventDefault();
-        document.getElementById("employee-details").classList.remove("active");
-        sessionStorage.removeItem("DetailsUserID");
+        closeDetails();
     });
 
-    document.getElementById("submitEmployee").addEventListener("click", function(event) {
+    function closeDetails() {
+        document.getElementById("employee-details").classList.remove("active");
+        sessionStorage.removeItem("DetailsUserID");
+        sessionStorage.removeItem("DetailsCurrentEmployee");
+    }
+
+    document.getElementById("button-create-new-employee").addEventListener("click", (event) => {
         event.preventDefault();
-        id = sessionStorage["DetailsUserID"];
-        form = document.getElementById("employee-details-form");
-        formData = new FormData(form);
-        editEmployee(id, formData)
-            .then(response => {
-                employee = new Employee(response);
+        sessionStorage.setItem("submitMode", "New");
+        openDetails();
+    });
 
-                document.getElementById("employee-details").classList.remove("active");
-                sessionStorage.removeItem("DetailsUserID");
-                original = document.getElementById("employee-" + response.id);
-                replace = employeeDiv(response);
+    document.getElementById("submitEmployee").addEventListener("click", (event) => {
+        event.preventDefault();
+        let form = document.getElementById("employee-details-form");
+        let formData = new FormData(form);
 
-                originalData = original.getElementsByClassName("employee-flex-wrapper")[0];
-                originalHeader = original.getElementsByClassName("fullName")[0];
+        if (sessionStorage.getItem("submitMode") == "New") {
+            createNewEmployee(formData)
+                .then(response => {
+                    employee = new Employee(response);
+                    sessionStorage.removeItem("submitMode");
+                    closeDetails();
+                    setupOverview()
+                })
+        } else {
+            id = sessionStorage["DetailsUserID"];
+            editEmployee(id, formData)
+                .then(response => {
+                    employee = new Employee(response);
+                    original = document.getElementById("employee-" + response.id);
+                    replace = employeeDiv(response);
 
-                replaceData = replace.getElementsByClassName("employee-flex-wrapper")[0];
+                    originalData = original.getElementsByClassName("employee-flex-wrapper")[0];
+                    originalHeader = original.getElementsByClassName("fullName")[0];
 
-                originalData.innerHTML = replaceData.innerHTML;
-                originalHeader.innerHTML = employee.getFullName();
-            });
+                    replaceData = replace.getElementsByClassName("employee-flex-wrapper")[0];
+
+                    originalData.innerHTML = replaceData.innerHTML;
+                    originalHeader.innerHTML = employee.firstName + employee.lastName
+                });
+        }
     });
 });

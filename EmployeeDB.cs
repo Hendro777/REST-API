@@ -22,14 +22,6 @@ namespace REST_API
 {
     public class EmployeeDB
     {
-        private List<Employee> list;
-
-        public List<Employee> List
-        {
-            get { return list; }
-            set { list = value; }
-        }
-
         private string filepath;
 
         public string Filepath
@@ -39,7 +31,8 @@ namespace REST_API
             {
                 if (Directory.Exists(value) == false)
                 {
-                    throw new ArgumentException("EmployeeDB.Filepath: Filedirectory doesn't exist");
+                    Directory.CreateDirectory(value);
+                    Console.Write("File Directory created for DB at: " + value);
                 }
                 else
                 {
@@ -55,16 +48,14 @@ namespace REST_API
         public EmployeeDB(string filepath)
         {
             this.Filepath = filepath;
-            this.List = new List<Employee>();
 
             foreach (string jsonPath in Directory.GetFiles(this.Filepath, "*.json"))
             {
                 Employee employee = JsonConvert.DeserializeObject<Employee>(System.IO.File.ReadAllText(jsonPath, Encoding.UTF8));
-                this.List.Add(employee);
             }
         }
 
-        public bool Add(Employee employee)
+        private void GenerateID(Employee employee)
         {
             string id = KeyGenerator.GetUniqueKey(8);
             while (this.GetEmployeeById(id) != null)
@@ -72,9 +63,13 @@ namespace REST_API
                 id = KeyGenerator.GetUniqueKey(8);
             }
             employee.Id = id;
+        }
+
+        public bool Add(Employee employee)
+        {
+            GenerateID(employee);
             string json = JsonConvert.SerializeObject(employee);
             File.WriteAllText(this.Filepath + employee.Id + ".json", json, Encoding.UTF8);
-            this.list.Add(employee);
             Console.WriteLine(employee.ToString() + " successfully added to EmployeeDB");
             return true;
         }
@@ -99,25 +94,33 @@ namespace REST_API
         public bool Remove(Employee employee)
         {
             string employeePath = this.Filepath + employee.Id + ".json";
-            if (File.Exists(employeePath) == false) 
+            if (File.Exists(employeePath) == false)
             {
                 Console.Write("EmployeeDB.Remove(): Employee JSON wasn't found");
                 return false;
-            } else
+            }
+            else
             {
                 File.Delete(employeePath);
-                this.list.Remove(employee);
                 Console.WriteLine(employee.ToString() + " successfully removed from EmployeeDB");
                 return true;
             }
         }
 
-        public bool EditEmployee(Employee employee,  IFormCollection form)
+        public Employee CreateNewEmployee(IFormCollection form)
         {
+            Employee employee = new Employee();
+            GenerateID(employee);
+            EditEmployee(employee, form);
+            Console.WriteLine(employee.ToString() + " successfully Added to Database");
+            return employee;
+        }
 
-            // Suche Queryparameter passend zu den Objektattributen & verändere Wert
+        public bool EditEmployee(Employee employee, IFormCollection form)
+        {
             PropertyInfo[] properties = typeof(Employee).GetProperties();
             NameValueCollection nvc = new NameValueCollection();
+            // musste so unschön gemacht werden, da man mit formdata schlecht umgehen kann
             JArray jobj = JsonConvert.DeserializeObject<JArray>(JsonConvert.SerializeObject(form));
 
             foreach (var item in jobj)
@@ -129,18 +132,18 @@ namespace REST_API
             {
                 var items = nvc.AllKeys.SelectMany(nvc.GetValues, (k, v) => new { key = k, value = v });
                 foreach (var it in items)
-                
+
                     if ((it.key.First().ToString().ToUpper() + it.key.Substring(1)).Equals(propertyInfo.Name))
                     {
                         propertyInfo.SetValue(employee, it.value);
                     }
-                
+
             }
             string json = JsonConvert.SerializeObject(employee);
             File.WriteAllText(this.Filepath + employee.Id + ".json", json, Encoding.UTF8);
+            Console.WriteLine(employee.ToString() + " successfully edited");
             return true;
         }
-
 
         public Employee GetEmployeeById(string id)
         {
@@ -156,7 +159,12 @@ namespace REST_API
 
         public List<Employee> GetAllEmployes()
         {
-            return this.List;
+            List<Employee> getAll = new List<Employee>();
+            foreach (string employeePath in Directory.GetFiles(this.Filepath))
+            {
+                getAll.Add((Employee)JsonConvert.DeserializeObject<Employee>(File.ReadAllText(employeePath, Encoding.UTF8)));
+            }
+            return getAll;
         }
     }
 }

@@ -10,39 +10,14 @@ using System.Media;
 
 namespace REST_API
 {
-    public class Employee
+    public class Employee : Person
     {
-        public Employee(string firstname, string lastname, string birthdate)
-        {
-            this.FirstName = firstname;
-            this.LastName = lastname;
-            this.BirthDate = birthdate;
-            this.Location = "Home Office";
-            this.Email = this.FirstName + "-" + this.LastName + "@restbank.de";
-            Random rnd = new Random();
-            this.PhoneNumber = "0641 7005 " + rnd.Next(10000000, 99999999);
-            this.MobileNumber = "0171 63 " + rnd.Next(10000000, 99999999);
-            this.Function = "Mitarbeiter";
-        }
 
         private string id;
         public string Id
         {
             get { return id; }
             set { id = value; }
-        }
-
-        private string firstName;
-        public string FirstName
-        {
-            get { return firstName; }
-            set { firstName = value; }
-        }
-        private string lastName;
-        public string LastName
-        {
-            get { return lastName; }
-            set { lastName = value; }
         }
 
         private string function;
@@ -84,11 +59,19 @@ namespace REST_API
             set { mobileNumber = value; }
         }
 
-        private string birthDate;
-        public string BirthDate
+        public Employee()
         {
-            get { return birthDate; }
-            set { birthDate = value; }
+
+        }
+
+        public Employee(string firstname, string lastname, string birthdate) : base(firstname, lastname, birthdate)
+        {
+            this.Location = "Home Office";
+            this.Email = this.FirstName + "-" + this.LastName + "@restbank.de";
+            Random rnd = new Random();
+            this.PhoneNumber = "0641 7005 " + rnd.Next(10000000, 99999999);
+            this.MobileNumber = "0171 63 " + rnd.Next(10000000, 99999999);
+            this.Function = "Mitarbeiter";
         }
 
         override
