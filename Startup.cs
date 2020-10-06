@@ -18,7 +18,12 @@ namespace REST_API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+
+            var builder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                 .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -28,11 +33,6 @@ namespace REST_API
         {
             services.AddControllers();
             services.AddMvc(options => options.EnableEndpointRouting = false);
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My first ASP.NET Core WebAPI", Version = "v1" });
-            });
 
             services.AddCors(c =>
             {
@@ -70,17 +70,10 @@ namespace REST_API
                     template: "{controller}/{action}/{id?}");
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Version 1");
-            });
-
             // webpages
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseCors("AllowLocalhost");
             app.UseCors(options => options.AllowAnyOrigin());
         }
     }
