@@ -34,20 +34,12 @@ namespace REST_API
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My first ASP.NET Core WebAPI", Version = "v1" });
             });
 
-            services.AddCors(options =>
+            services.AddCors(c =>
             {
-                options.AddPolicy("AllowLocalhost",
-                  builder =>
-                  {
-                      builder
-                        .WithOrigins("http://localhost:80")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                  });
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
 
             services.AddControllersWithViews();
-
 
         }
 
@@ -89,6 +81,7 @@ namespace REST_API
             app.UseStaticFiles();
 
             app.UseCors("AllowLocalhost");
+            app.UseCors(options => options.AllowAnyOrigin());
         }
     }
 }
