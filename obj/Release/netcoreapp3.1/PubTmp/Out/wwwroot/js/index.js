@@ -24,7 +24,7 @@ class Employee {
 
 // API-Methods _________________________________________________________________________________________________________________________________________________________________________________________________
 function getAllEmployees() {
-    return fetch('http://localhost/api/employee')
+    return fetch('https://' + window.location.hostname + '/api/employee')
         .then(res => {
             if (res.ok) {
                 return res.json();
@@ -42,7 +42,7 @@ function getAllEmployees() {
 
 function getEmployeeByID(id) {
 
-    return fetch('http://localhost/api/employee/' + id)
+    return fetch('https://' + window.location.hostname + '/api/employee/' + id)
         .then(res => {
             if (res.ok) {
                 return res.json();
@@ -59,7 +59,7 @@ function getEmployeeByID(id) {
 }
 
 function editEmployee(id, formdata) {
-    return fetch('http://localhost/api/employee/' + id, {
+    return fetch('https://' + window.location.hostname + '/api/employee/' + id, {
             method: 'PATCH',
             body: formdata
         })
@@ -78,8 +78,24 @@ function editEmployee(id, formdata) {
         });
 }
 
+function deleteEmployee(id) {
+    return fetch('https://' + window.location.hostname + '/api/employee/' + id, {
+            method: 'DELETE',
+        })
+        .then(res => {
+            if (res.ok) {
+                console.log("Successfully deleted employee with id: " + id);
+            } else {
+                console.warn(res.status + ":" + res.statusText);
+            }
+        })
+        .catch(err => {
+            console.warn(err);
+        });
+}
+
 function createNewEmployee(formdata) {
-    return fetch('http://localhost/api/employee/new', {
+    return fetch('https://' + window.location.hostname + '/api/employee/new', {
             method: 'POST',
             body: formdata
         })
@@ -342,4 +358,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
         }
     });
+
 });

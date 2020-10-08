@@ -29,89 +29,44 @@ namespace REST_API
             get { return filepath; }
             set
             {
-                if (Directory.Exists(value) == false)
-                {
-                    Directory.CreateDirectory(value);
-                    Console.Write("File Directory created for DB at: " + value);
-                }
-                else
-                {
-                    if ((value[^1].Equals("/")) == false && (value[^1].Equals(@"\") == false))
-                    {
-                        value += "/";
-                    }
-                    this.filepath = value;
-                }
+                filepath = General.checkDirPath(value);
             }
         }
 
         public EmployeeDB(string filepath)
         {
             this.Filepath = filepath;
-
-            foreach (string jsonPath in Directory.GetFiles(this.Filepath, "*.json"))
-            {
-                Employee employee = JsonConvert.DeserializeObject<Employee>(System.IO.File.ReadAllText(jsonPath, Encoding.UTF8));
-            }
         }
 
-        private void GenerateID(Employee employee)
+
+        public Employee GetEmployeeById(string id)
         {
-            string id = KeyGenerator.GetUniqueKey(8);
-            while (this.GetEmployeeById(id) != null)
+            string employeePath = this.Filepath + id + ".json";
+            if (File.Exists(employeePath) == false)
             {
-                id = KeyGenerator.GetUniqueKey(8);
+                return null;
             }
-            employee.Id = id;
+            return (Employee)JsonConvert.DeserializeObject<Employee>(File.ReadAllText(employeePath, Encoding.UTF8));
         }
 
-        public bool Add(Employee employee)
+
+        public List<Employee> GetAllEmployes()
+        {
+            Console.WriteLine(this.Filepath);
+            List<Employee> getAll = new List<Employee>();
+            foreach (string employeePath in Directory.GetFiles(this.Filepath))
+            {
+                getAll.Add((Employee)JsonConvert.DeserializeObject<Employee>(File.ReadAllText(employeePath, Encoding.UTF8)));
+            }
+            return getAll;
+        }
+
+
+        public Employee CreateNewEmployee(Employee employee)
         {
             GenerateID(employee);
             string json = JsonConvert.SerializeObject(employee);
             File.WriteAllText(this.Filepath + employee.Id + ".json", json, Encoding.UTF8);
-            Console.WriteLine(employee.ToString() + " successfully added to EmployeeDB");
-            return true;
-        }
-
-        public bool New(string firstname, string lastname, string birthdate)
-        {
-            Employee employee = new Employee(firstname, lastname, birthdate);
-            return this.Add(employee);
-        }
-
-        public bool Remove(string id)
-        {
-            Employee found = this.GetEmployeeById(id);
-            if (found == null)
-            {
-                Console.WriteLine("Can't be removed - No Employee with the ID {0} was found.", id);
-                return false;
-            }
-            return this.Remove(found);
-        }
-
-        public bool Remove(Employee employee)
-        {
-            string employeePath = this.Filepath + employee.Id + ".json";
-            if (File.Exists(employeePath) == false)
-            {
-                Console.Write("EmployeeDB.Remove(): Employee JSON wasn't found");
-                return false;
-            }
-            else
-            {
-                File.Delete(employeePath);
-                Console.WriteLine(employee.ToString() + " successfully removed from EmployeeDB");
-                return true;
-            }
-        }
-
-        public Employee CreateNewEmployee(IFormCollection form)
-        {
-            Employee employee = new Employee();
-            GenerateID(employee);
-            EditEmployee(employee, form);
             Console.WriteLine(employee.ToString() + " successfully Added to Database");
             return employee;
         }
@@ -145,26 +100,40 @@ namespace REST_API
             return true;
         }
 
-        public Employee GetEmployeeById(string id)
+        public bool Remove(string id)
         {
-            string employeePath = this.Filepath + id + ".json";
-            if (File.Exists(employeePath) == false)
+            Employee found = this.GetEmployeeById(id);
+            if (found == null)
             {
-                Console.WriteLine("EmployeeDB.GetEmployeeById(): No Employee JSON with the ID {0} was found.", id);
-                return null;
+                return false;
             }
-
-            return (Employee)JsonConvert.DeserializeObject<Employee>(File.ReadAllText(employeePath, Encoding.UTF8));
+            return this.Remove(found);
         }
 
-        public List<Employee> GetAllEmployes()
+        public bool Remove(Employee employee)
         {
-            List<Employee> getAll = new List<Employee>();
-            foreach (string employeePath in Directory.GetFiles(this.Filepath))
+            string employeePath = this.Filepath + employee.Id + ".json";
+            if (File.Exists(employeePath) == false)
             {
-                getAll.Add((Employee)JsonConvert.DeserializeObject<Employee>(File.ReadAllText(employeePath, Encoding.UTF8)));
+                Console.Write("EmployeeDB.Remove(): Employee JSON wasn't found");
+                return false;
             }
-            return getAll;
+            else
+            {
+                File.Delete(employeePath);
+
+                return true;
+            }
+        }
+
+        private void GenerateID(Employee employee)
+        {
+            string id = KeyGenerator.GetUniqueKey(8);
+            while (this.GetEmployeeById(id) != null)
+            {
+                id = KeyGenerator.GetUniqueKey(8);
+            }
+            employee.Id = id;
         }
     }
 }

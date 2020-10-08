@@ -24,6 +24,7 @@
     ".NETCoreApp,Version=v3.1": {
       "REST-API/1.0.0": {
         "dependencies": {
+          "LettuceEncrypt": "1.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.4",
           "Newtonsoft.Json": "12.0.3",
           "Swashbuckle.AspNetCore": "5.6.3",
@@ -316,6 +317,35 @@
         },
         "compile": {
           "REST-API.dll": {}
+        }
+      },
+      "Certes/2.3.3": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "Portable.BouncyCastle": "1.8.1.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Certes.dll": {
+            "assemblyVersion": "2.3.3.0",
+            "fileVersion": "2.3.3.1118"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Certes.dll": {}
+        }
+      },
+      "LettuceEncrypt/1.0.0": {
+        "dependencies": {
+          "Certes": "2.3.3"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/LettuceEncrypt.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.0/LettuceEncrypt.dll": {}
         }
       },
       "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
@@ -811,6 +841,17 @@
         },
         "compile": {
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
+        }
+      },
+      "Portable.BouncyCastle/1.8.1.4": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "assemblyVersion": "1.8.1.0",
+            "fileVersion": "1.8.1.200"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -3297,6 +3338,20 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Certes/2.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-oVRNqmApK0YNfZaZfaxtwFwWF5aNMiRPj33oJHWJUxW60mq6J61CWdex+Ghffyk7dafTVk8EBgzO4MAHOCgAJw==",
+      "path": "certes/2.3.3",
+      "hashPath": "certes.2.3.3.nupkg.sha512"
+    },
+    "LettuceEncrypt/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FI8/xustwTndWMhNv9jge/T9rtLNRONSKuT5Il2Bl1xOpIWU1gj8vxHbalm0O2u7J8EM5qMyu4VvDGBpNN17Zw==",
+      "path": "lettuceencrypt/1.0.0",
+      "hashPath": "lettuceencrypt.1.0.0.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Html.Abstractions/2.2.0": {
       "type": "package",
       "serviceable": true,
@@ -3492,6 +3547,13 @@
       "sha512": "sha512-qbXaB76XYUVLocLBs8Z9TS/ERGK2wm797feO+0JEPFvT7o7MRadOR77mqaSD4J1k8G+DlZQyq+MlkCuxrkr3ag==",
       "path": "nuget.frameworks/4.7.0",
       "hashPath": "nuget.frameworks.4.7.0.nupkg.sha512"
+    },
+    "Portable.BouncyCastle/1.8.1.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tbwNj323gU2Tdp+CpgkRuxGq8bo4dUp/KGLTvIct2iaL2N7iyMWB75T7MsVzVlHGJ2KwSNi7LMdYutcbhad6kw==",
+      "path": "portable.bouncycastle/1.8.1.4",
+      "hashPath": "portable.bouncycastle.1.8.1.4.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

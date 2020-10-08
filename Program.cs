@@ -7,13 +7,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Microsoft.Extensions.Options;
+using System.Net;
+using Microsoft.AspNetCore;
+using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace REST_API
 {
+
     public class Program
     {
         public static void Main(string[] args)
         {
+
             Debug.WriteLine("Creating HostBuilder");
             CreateHostBuilder(args).Build().Run();
         }
@@ -22,7 +29,18 @@ namespace REST_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.ListenAnyIP(80);
+
+                        serverOptions.ListenAnyIP(443, listenOptions =>
+                        {
+                            string password = System.IO.File.ReadLines("C:/cert/hendro777.tk.txt").First().Trim();
+                            listenOptions.UseHttps("C:/cert/hendro777.tk.pfx", password);
+                        });
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }
 }
+

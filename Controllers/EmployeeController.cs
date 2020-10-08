@@ -25,13 +25,8 @@ namespace REST_API
     public class EmployeeController : ControllerBase
     {
         private const string pathDB = @"C:/REST-API/Data\";
-        private EmployeeDB empDB = new EmployeeDB(pathDB);
+        EmployeeDB empDB = new EmployeeDB(pathDB);
 
-        public EmployeeDB EmpDB
-        {
-            get { return empDB; }
-            set { empDB = value; }
-        }
 
         [HttpGet]
         // [Route("")]
@@ -40,9 +35,9 @@ namespace REST_API
         200 - OK + [Employees as a List] */
         public IActionResult GetAllEmployees()
         {
-            Console.WriteLine("Get All Employees Request");
-            return Ok(EmpDB.GetAllEmployes());
+            return Ok(empDB.GetAllEmployes());
         }
+
 
         /* Returns the Employee with the given ID if the File exists 
         example: "http://localhost/api/employee/xxxx.json"
@@ -50,18 +45,17 @@ namespace REST_API
         200 - OK + employee object
         404 - if the file doesnt exist */
 
+
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetEmployeeByID(string id)
         {
-            Console.WriteLine("Get for Employee with ID: "+id);
-
             Employee employee = empDB.GetEmployeeById(id);
-            if (employee == null)
-            {
-                return NotFound("No Employee found with given ID: " + id);
+            if (employee == null) {
+                return NotFound();
             }
             return Ok(employee);
+            
         }
 
         /* Creates the Employee with the given ID and the belonging JSON
@@ -70,18 +64,22 @@ namespace REST_API
         200 - Added successfully + JSON
         500 - something went wrong */
 
+
         [HttpPost]
         [Route("new")]
-        public IActionResult PostNewEmployee()
+        public IActionResult PostNewEmployee(Employee employee)
         {
-            Console.WriteLine("POST Request - New Employee");
-            Employee newEmployee = empDB.CreateNewEmployee(Request.Form);
+            Console.WriteLine(JsonConvert.SerializeObject(employee));
+
+            Employee newEmployee = empDB.CreateNewEmployee(employee);
+
             if (newEmployee == null)
             {
                 return BadRequest();
             }
             return Ok(newEmployee);
         }
+
 
         /* */
         [HttpPatch]
@@ -107,6 +105,7 @@ namespace REST_API
             return Ok(employee);
         }
 
+
         /* Deletes the Employee with the given ID if the File exists
         example: "http://localhost/api/employee/xxxx.json"
         Return Types: 
@@ -130,6 +129,7 @@ namespace REST_API
             }
             return NoContent();
         }
+
 
         /*
         [HttpGet]

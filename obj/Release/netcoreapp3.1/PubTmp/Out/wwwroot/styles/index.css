@@ -466,6 +466,10 @@ nav {
 
 .details-data-wrapper input {}
 
+#deleteEmployee {
+    color: rgb(201, 50, 50);
+}
+
 #submitEmployee[editmode=false] {
     display: none;
 }
@@ -546,13 +550,13 @@ footer {
 }
 
 .button:hover {
-    box-shadow: 0px 15px 25px -5px #5d7a969a;
+    text-shadow: 0px 15px 25px #5d7a969a;
     -webkit-transform: scale(1.03);
     transform: scale(1.03);
 }
 
 .button:active {
-    box-shadow: 0px 4px 8px #445e7981;
+    text-shadow: 0px 4px 8px #445e7981;
     -webkit-transform: scale(0.98);
     transform: scale(0.98);
 }
@@ -568,7 +572,7 @@ footer {
 }
 
 .button-light:hover {
-    box-shadow: 0px 15px 25px -5px #cfdbe59a;
+    text-shadow: 0px 15px 25px -5px #cfdbe59a;
     -webkit-transform: scale(1.03);
     transform: scale(1.03);
 }

@@ -117,3 +117,10 @@ C:\REST-API\bin\Release\netcoreapp3.1\Data\WsRyuHLT.json
 C:\REST-API\bin\Release\netcoreapp3.1\Data\z6byixLF.json
 C:\REST-API\bin\Release\netcoreapp3.1\Data\zRJASMwB.json
 C:\REST-API\bin\Release\netcoreapp3.1\Data\r6zVOaco.json
+C:\REST-API\bin\Release\netcoreapp3.1\Data\HJgSmhMJ.json
+C:\REST-API\bin\Release\netcoreapp3.1\Data\r89OaIHW.json
+C:\REST-API\bin\Release\netcoreapp3.1\Data\rU8SVMlL.json
+C:\REST-API\bin\Release\netcoreapp3.1\Certes.dll
+C:\REST-API\bin\Release\netcoreapp3.1\LettuceEncrypt.dll
+C:\REST-API\bin\Release\netcoreapp3.1\BouncyCastle.Crypto.dll
+C:\REST-API\bin\Release\netcoreapp3.1\Data\VhoAIfHu.json

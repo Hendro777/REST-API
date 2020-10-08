@@ -90,6 +90,14 @@ header h1 {
     letter-spacing: 2px;
 }
 
+.nav-flex-wrapper {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 69px;
+    z-index: 100;
+}
+
 nav {
     background-color: var(--nav-bg-color);
     position: sticky;
@@ -103,7 +111,6 @@ nav {
     padding: 10px 2px;
     border-bottom: 3px solid var(--nav-b-B-color);
     box-shadow: 0 6px 6px -6px var(--nav-box-shadow-color);
-    z-index: 100;
 }
 
 #nav-menu {
@@ -152,6 +159,49 @@ nav {
     padding: 0;
 }
 
+.info-popup {
+    position: sticky;
+    width: 100%;
+    top: calc( 69px - 41px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 6px 6px -6px #495157;
+    background-color: rgb(255, 207, 51);
+    color: inherit;
+    padding: 6px;
+    font-size: 1.3em;
+    box-shadow: none;
+    z-index: -1;
+    transform: translateY(-100%);
+    transition: transform 1s ease-in;
+}
+
+.info-popup.active {
+    display: flex;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.info-popup i {
+    padding: 4px;
+    font-style: bold;
+}
+
+.info-popup .message {
+    padding-top: 3px;
+}
+
+.info-popup[type="error"] {
+    background-color: rgb(196, 84, 84);
+    color: white;
+}
+
+.info-popup[type="success"] {
+    background-color: rgb(0, 17, 0);
+    color: rgb(231, 231, 231);
+}
+
 #content {
     top: 68px;
     bottom: 18px;
@@ -185,7 +235,6 @@ nav {
 .employee-wrapper {
     display: flex;
     flex-direction: row;
-    max-width: calc(100%);
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
@@ -273,6 +322,7 @@ nav {
 .employee-flex-wrapper.hidden .less-info {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
 }
 
@@ -364,12 +414,12 @@ nav {
 .detail-wrapper {
     display: flex;
     width: 80%;
+    max-height: 70%;
     background-color: white;
     margin: auto;
-    min-height: 400px;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.74);
     z-index: 1;
-    overflow: hidden;
+    overflow: scroll;
     border-radius: 25px;
     flex-direction: column;
     align-items: center;
@@ -406,7 +456,13 @@ nav {
 }
 
 .detail-content {
+    display: flex;
+    flex-direction: column;
     flex-grow: 10;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
 }
 
 .profile-picture img {
@@ -456,6 +512,12 @@ nav {
     border-bottom: 1px solid #e6904583;
 }
 
+.employee-details-form[editmode=true] .details-data-wrapper input:invalid {
+    border: none;
+    border-bottom: 1px solid rgb(201, 50, 50);
+    background-color: rgba(201, 50, 50, 0.144);
+}
+
 .details-data-wrapper input,
 .details-data-wrapper label {
     flex: 1 0 21%;
@@ -465,6 +527,10 @@ nav {
 }
 
 .details-data-wrapper input {}
+
+#deleteEmployee {
+    color: rgb(201, 50, 50);
+}
 
 #submitEmployee[editmode=false] {
     display: none;
@@ -546,13 +612,13 @@ footer {
 }
 
 .button:hover {
-    box-shadow: 0px 15px 25px -5px #5d7a969a;
+    text-shadow: 0px 15px 25px #5d7a969a;
     -webkit-transform: scale(1.03);
     transform: scale(1.03);
 }
 
 .button:active {
-    box-shadow: 0px 4px 8px #445e7981;
+    text-shadow: 0px 4px 8px #445e7981;
     -webkit-transform: scale(0.98);
     transform: scale(0.98);
 }
@@ -568,7 +634,7 @@ footer {
 }
 
 .button-light:hover {
-    box-shadow: 0px 15px 25px -5px #cfdbe59a;
+    text-shadow: 0px 15px 25px -5px #cfdbe59a;
     -webkit-transform: scale(1.03);
     transform: scale(1.03);
 }

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.HostFiltering;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +20,7 @@ namespace REST_API
     {
         public Startup(IConfiguration configuration)
         {
-
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                 .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -40,7 +37,6 @@ namespace REST_API
             });
 
             services.AddControllersWithViews();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +48,7 @@ namespace REST_API
             }
 
             // app.UseHttpsRedirection();
+            Console.WriteLine("No Redirection");
 
             app.UseRouting();
 
@@ -75,6 +72,6 @@ namespace REST_API
             app.UseStaticFiles();
 
             app.UseCors(options => options.AllowAnyOrigin());
-        }
+        }        
     }
 }

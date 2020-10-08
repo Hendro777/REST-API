@@ -8,7 +8,6 @@ C:\REST-API\bin\Debug\netcoreapp3.1\REST-API.runtimeconfig.dev.json
 C:\REST-API\bin\Debug\netcoreapp3.1\REST-API.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\REST-API.pdb
 C:\REST-API\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.csprojAssemblyReference.cache
 C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.AssemblyInfoInputs.cache
 C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.AssemblyInfo.cs
 C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.RazorTargetAssemblyInfo.cache
@@ -22,15 +21,6 @@ C:\REST-API\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.csproj.CoreCompileInputs.cache
-C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.MvcApplicationPartsAssemblyInfo.cs
-C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.MvcApplicationPartsAssemblyInfo.cache
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\1HwiA3go.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\5ruI5bGi.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\AHMWZ6G4.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\Ey5k8rbV.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\FJ0oH5Fx.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\g6plvinp.json
 C:\REST-API\bin\Debug\netcoreapp3.1\REST-API.Views.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\Microsoft.CodeAnalysis.dll
@@ -104,17 +94,16 @@ C:\REST-API\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.Workspaces.resourc
 C:\REST-API\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\REST-API\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\0A2sVpTk.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\B4I7EpVH.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\FooUyl2h.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\fWafDRN2.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\GRTduNKA.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\hU9vy7c8.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\hVh3Upca.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\Reu4s53m.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\SPSnC3im.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\Uweo0Q8e.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\WsRyuHLT.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\z6byixLF.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\zRJASMwB.json
-C:\REST-API\bin\Debug\netcoreapp3.1\Data\r6zVOaco.json
+C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.csproj.CoreCompileInputs.cache
+C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.MvcApplicationPartsAssemblyInfo.cs
+C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.MvcApplicationPartsAssemblyInfo.cache
+C:\REST-API\obj\Debug\netcoreapp3.1\REST-API.csprojAssemblyReference.cache
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\4SantTGj.json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\xpgSKiv3.json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\u8gVJlxS.json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (2).json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (3).json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (4).json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (5).json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (6).json
+C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie.json

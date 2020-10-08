@@ -29,7 +29,15 @@
     <Folder Include="wwwroot\html\" />
     <Folder Include="wwwroot\resource\" />
     <Folder Include="wwwroot\styles\" />
+	    <Folder Include="wwwroot\js\" />
   </ItemGroup>
+  
+    <ItemGroup>
+    <!-- extends watching group to include *.js files -->
+		<Watch 
+			Include="**\*.cs;**\*.js;**\*.html;**.*.md;**\*.css" 
+		/>
+	</ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
