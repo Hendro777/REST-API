@@ -30,6 +30,7 @@ namespace REST_API
                 {
                     webBuilder.ConfigureKestrel(serverOptions =>
                     {
+                        /*
                         serverOptions.ListenAnyIP(80);
 
                         serverOptions.ListenAnyIP(443, listenOptions =>
@@ -37,6 +38,16 @@ namespace REST_API
                             string password = System.IO.File.ReadLines("C:/cert/hendro777.tk.txt").First().Trim();
                             listenOptions.UseHttps("C:/cert/hendro777.tk.pfx", password);
                         });
+                        */
+
+                        serverOptions.ListenAnyIP(80);
+
+                        serverOptions.ListenAnyIP(443, listenOptions =>
+                        {
+                            string password = System.IO.File.ReadLines("C:/cert/hendro777.tk.txt").First().Trim();
+                            listenOptions.UseHttps("C:/cert/employee.lind.pfx", password);
+                        });
+
                     });
                     webBuilder.UseStartup<Startup>();
                 });

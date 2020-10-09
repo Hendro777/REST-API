@@ -47,7 +47,8 @@ namespace REST_API
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
+            app.UseHsts();
+            app.UseHttpsRedirection();
             Console.WriteLine("No Redirection");
 
             app.UseRouting();
