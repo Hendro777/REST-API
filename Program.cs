@@ -15,7 +15,6 @@ using System.Security.Cryptography;
 
 namespace REST_API
 {
-
     public class Program
     {
         public static void Main(string[] args)
@@ -43,4 +42,3 @@ namespace REST_API
                 });
     }
 }
-

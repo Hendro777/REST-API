@@ -107,3 +107,5 @@ C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (4).json
 C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (5).json
 C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie (6).json
 C:\REST-API\bin\Debug\netcoreapp3.1\Data\08CiX5d3 - Kopie.json
+C:\REST-API\bin\Debug\netcoreapp3.1\wwwroot - Kopie\web.config
+C:\REST-API\bin\Debug\netcoreapp3.1\wwwroot - Kopie\jsconfig.json

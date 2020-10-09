@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>REST a minute e.G.</title>
+    <link rel="stylesheet" href="/styles/index.css">
+    <script type="text/javascript" src="/js/fontawesome.js"></script>
+    <script type="text/javascript" src="/js/sweetalert2.all.js"></script>
+    <script type="text/javascript" src="/js/general.js"></script>
+    <script type="text/javascript" src="/js/employeeAPI.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <div id="logo">
+            </div>
+            <h1>REST a minute e.G.</h1>
+        </header>
+
+        <div class="nav-flex-wrapper">
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <li><a href="" class="active"><i class="fas fa-users"></i></i> Mitarbeiter</a></li>
+                    <li><a href=""><i class="fas fa-tools"></i> Administration</a></li>
+                </ul>
+                <div id="popup-menu">
+                    <div id="div1"></div>
+                    <div id="div2"></div>
+                    <div id="div3"></div>
+                </div>
+            </nav>
+            <div id="info-popup" class="info-popup">
+                <div class="icon"><i class="fas fa-info-circle"></i></div>
+                <div class="message"></div>
+                <div><i id="closeInfo" class="fas fa-times button"></i></div>
+            </div>
+        </div>
+
+        <div id="content" class="content">
+            <div id="employee-details" class="employee-details">
+                <div class="detail-wrapper">
+                    <div class="detail-header">
+                        <div></div>
+                        <div class="fullName"></div>
+                        <div><i id="closeDetails" class="fas fa-times-circle button-light"></i></div>
+                    </div>
+                    <div class="detail-content">
+                        <div class="profile-picture centered"><img src="https://images.assetsdelivery.com/compings_v2/decade3d/decade3d1406/decade3d140600029.jpg"></div>
+                        <div id="deleteEmployee" class="button"><i class="fas fa-trash-alt"></i> Mitarbeiter löschen</div>
+                        <form id="employee-details-form" class="employee-details-form">
+                            <div class='details-data-wrapper'>
+                                <div class='details-data'><label for='firstName'>Vorname</label><input id='firstName' name='firstName' minlength="3" maxlength="50" required></input>
+                                </div>
+                                <div class='details-data'><label for='lastName'>Nachname</label><input id='lastName' name='lastName' minlength="3" maxlength="50" required></input>
+                                </div class='details-data'>
+                                <div class='details-data'><label for='birthDate'>Geburtstag</label><input id='birthDate' name='birthDate' required></input>
+                                </div>
+                                <div class='details-data'><label for='function'>Funktion</label><input id='function' name='function' minlength="3" maxlength="50" required></input>
+                                </div>
+                            </div>
+
+                            <div class='details-data-wrapper'>
+                                <div class='details-data'><label for='location'>Standort</label><input id='location' name='location'></input>
+                                </div>
+                                <div class='details-data'><label for='email'>e-Mail</label><input type='text' id='email' name='email'></input>
+                                </div class='details-data '>
+                                <div class='details-data '><label for='phoneNumber '>Telefonnummer</label><input id='phoneNumber' name='phoneNumber'></input>
+                                </div class='details-data '>
+                                <div class='details-data '><label for='mobileNumber '>Mobil</label><input id='mobileNumber' name='mobileNumber'></input>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div><i id="submitEmployee" class="fas fa-check-circle button"></i></div>
+                    <div class='detail-footer '>
+                        <div class='actions '><i class='fas fa-envelope-square button-light'></i> <i class='fas fa-phone-square-alt button-light'></i></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="createnew">
+                <div id='create-new-employee' class='employee'>
+                    <div class='employee-header'>
+                        <div><i class='fas fa-user-circle button'></i></div>
+                        <p class='bold fullName'>Neuen Mitarbeiter hinzufügen</p>
+                        <div></div>
+                    </div>
+                    <div class="employee-flex-wrapper"><i id="button-create-new-employee" class="fas fa-plus button"></i></div>
+                    <div class='employee-footer'>
+                        <div class='actions'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="employee-wrapper">
+
+            </div>
+        </div>
+        <footer class="footer ">Hendrik Lind &copy;2020</footer>
+    </div>
+</body>
+
+</html>

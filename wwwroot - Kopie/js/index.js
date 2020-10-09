@@ -48,13 +48,8 @@ function setupOverview() {
 // Open Detailed View of Employee
 function openDetails(id = null, editmode = true) {
     let employeeDetails = document.getElementById("employee-details");
-    let employeeDetailsWrapper = document.getElementsByClassName("detail-wrapper")[0];
     let employeeForm = document.getElementById("employee-details-form");
     let formFields = employeeForm.getElementsByTagName("input");
-
-    console.log(employeeDetailsWrapper.scrollTop);
-    employeeDetailsWrapper.scrollTop = 0;
-    console.log(employeeDetailsWrapper.scrollTop);
     controlInput(formFields, editmode);
 
     if (id == null) {
@@ -227,16 +222,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
         }
     });
-
-    window.onscroll = function() { setDetailsTop() };
-
-    function setDetailsTop() {
-        let nav = document.getElementById("nav");
-        let employeeDetails = document.getElementsByClassName("employee-details")[0];
-
-        let viewportoffset = nav.getBoundingClientRect();
-        let offsetTop = viewportoffset.top;
-        employeeDetails.style.top = (nav.offsetHeight + offsetTop) + "px";
-    }
 
 });

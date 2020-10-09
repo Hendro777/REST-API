@@ -78,8 +78,7 @@ header {
     top: 0;
     left: 0;
     padding: 8px 15px;
-    width: inherit;
-    margin: 0 auto;
+    width: 100%;
     border-bottom: 1px solid var(--header-b-B-color);
     z-index: 97;
 }
@@ -397,12 +396,12 @@ nav {
 }
 
 .employee-details {
-    position: fixed;
-    top: calc(69px + 46px);
-    bottom: 0;
     display: none;
-    width: 100%;
+    position: fixed;
+    width: inherit;
     max-width: 1920px;
+    bottom: 0;
+    top: 69px;
     background-color: rgba(77, 74, 74, 0.363);
     z-index: 1;
     margin: auto;
@@ -413,15 +412,14 @@ nav {
 }
 
 .detail-wrapper {
-    margin: auto;
     display: flex;
-    max-width: 92.5%;
-    min-width: 300px;
-    max-height: 95%;
+    width: 80%;
+    max-height: 70%;
     background-color: white;
+    margin: auto;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.74);
     z-index: 1;
-    overflow: auto;
+    overflow: scroll;
     border-radius: 25px;
     flex-direction: column;
     align-items: center;
@@ -431,9 +429,7 @@ nav {
     background: var(--employee-border-color);
     color: white;
     font-size: 1.5em;
-    position: sticky;
-    top: 0;
-    z-index: 2;
+    z-index: -1;
     padding: 8px 8px 2px 8px;
     display: flex;
     flex-direction: row;
@@ -453,6 +449,7 @@ nav {
 
 .profile-picture {
     position: relative;
+    overflow: hidden;
     height: 250px;
     width: 250px;
     margin-top: 10px;
