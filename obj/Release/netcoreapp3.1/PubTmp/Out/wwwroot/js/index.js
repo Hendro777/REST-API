@@ -1,168 +1,137 @@
-// Class Employee ______________________________________________________________________________________________________________________________________________________________________________________________
-class Employee {
-    constructor(json) {
-        Object.assign(this, json);
-    }
-
-    getFullName() {
-        return this.firstName + " " + this.lastName;
-    }
-
-
-    static sortByLastThenFirstName(a, b) {
-        if (a.lastName < b.lastName) return -1;
-        if (a.lastName > b.lastName) return 1;
-
-        if (a.lastName == b.lastName) {
-            if (a.firstName < b.firstName) return -1;
-            if (a.firstName > b.firstName) return -1;
-        }
-    }
-}
-
-
-
-// API-Methods _________________________________________________________________________________________________________________________________________________________________________________________________
-function getAllEmployees() {
-    return fetch('https://' + window.location.hostname + '/api/employee')
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                console.log(res.status + ":" + res.statusText);
-            }
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(err => {
-            console.warn(err);
-        });
-};
-
-function getEmployeeByID(id) {
-
-    return fetch('https://' + window.location.hostname + '/api/employee/' + id)
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                console.log(res.status + ":" + res.statusText);
-            }
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(err => {
-            console.warn(err);
-        });
-}
-
-function editEmployee(id, formdata) {
-    return fetch('https://' + window.location.hostname + '/api/employee/' + id, {
-            method: 'PATCH',
-            body: formdata
-        })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                console.warn(res.status + ":" + res.statusText);
-            }
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(err => {
-            console.warn(err);
-        });
-}
-
-function deleteEmployee(id) {
-    return fetch('https://' + window.location.hostname + '/api/employee/' + id, {
-            method: 'DELETE',
-        })
-        .then(res => {
-            if (res.ok) {
-                console.log("Successfully deleted employee with id: " + id);
-            } else {
-                console.warn(res.status + ":" + res.statusText);
-            }
-        })
-        .catch(err => {
-            console.warn(err);
-        });
-}
-
-function createNewEmployee(formdata) {
-    return fetch('https://' + window.location.hostname + '/api/employee/new', {
-            method: 'POST',
-            body: formdata
-        })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                console.warn(res.status + ":" + res.statusText);
-            }
-        })
-        .then(data => {
-            return data;
-        })
-        .catch(err => {
-            console.warn(err);
-        });
-}
-
-
-
-// DOM Methods ______________________________________________________________________________________________________________________________________________________________________________________________
-
 // setupOverview 
-function setupOverview() {
-    getAllEmployees()
-        .then(response => {
-            let allEmployees = response.sort(Employee.sortByLastThenFirstName);
-            let employeeWrapper = document.getElementsByClassName("employee-wrapper")[0];
+async function setupOverview() {
+    if (localStorage.getItem("allEmployees") === null) {
+        await getAllEmployees()
+            .then(response => {
+                console.log("allEmployees from Fetch");
+                allEmployees = response;
+                localStorage.setItem("allEmployees", JSON.stringify(allEmployees));
+            })
+            .catch(err => console.warn(err));
+    } else {
+        console.log("allEmployees from LocalStorage");
+        allEmployees = JSON.parse(localStorage.getItem("allEmployees"));
+    }
 
-            while (employeeWrapper.firstChild) {
-                employeeWrapper.removeChild(employeeWrapper.firstChild);
+    // sortie nach Auswahl
+    let sortCriteria = document.getElementById("sortSelect").value;
+    let sortFeature;
+    console.log(sortCriteria);
+    switch (sortCriteria) {
+        case "firstName":
+            allEmployees.sort(Employee.sortByFirstThenLastName);
+            sortFeature = function(employee) {
+                return employee["firstName"].charAt(0).toUpperCase();
             }
+            break;
+        case "lastName":
+        default:
+            sortFeature = function(employee) {
+                return employee["lastName"].charAt(0).toUpperCase();
+            }
+            allEmployees.sort(Employee.sortByLastThenFirstName);
+    }
 
-            for (employee of allEmployees) {
-                let employeeTMP = new Employee(employee);
-                let employeeDivTMP = employeeDiv(employeeTMP);
-                employeeWrapper.append(employeeDivTMP);
+    // leere Wrapper mit allen employee-Divs
+    let employeeWrapper = document.getElementsByClassName("employee-wrapper")[0];
+    while (employeeWrapper.firstChild) {
+        employeeWrapper.removeChild(employeeWrapper.firstChild);
+    }
 
-                let inputfields = document.getElementsByTagName("input");
-                controlInput(inputfields, false);
+    let currentSortFeature = null;
+    for (employee of allEmployees) {
+        let thisSortFeature = sortFeature(employee);
+        if (currentSortFeature == null || thisSortFeature != currentSortFeature) {
+            currentSortFeature = thisSortFeature;
+            employeeWrapper.append(document.createTextNode(currentSortFeature));
+        }
 
-                openDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("openDetails");
-                for (i = 0; i < openDetail.length; i++) {
-                    openDetail[i].addEventListener("click", (event) => {
-                        id = event.target.getAttribute("employee-id");
-                        openDetails(id, false);
-                        console.log(employeeTMP.id);
-                    });
+        let employeeTMP = new Employee(employee);
+        let employeeDivTMP = employeeDiv(employeeTMP);
+        employeeWrapper.append(employeeDivTMP);
+
+        let inputfields = document.getElementsByTagName("input");
+        controlInput(inputfields, false);
+
+        openDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("openDetails");
+        for (i = 0; i < openDetail.length; i++) {
+            openDetail[i].addEventListener("click", (event) => {
+                id = event.target.getAttribute("employee-id");
+                openDetails(id, false);
+            });
+        }
+
+
+        editDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("editDetails")[0];
+        editDetail.addEventListener("click", (event) => {
+            id = event.target.getAttribute("employee-id");
+            openDetails(id, true);
+        });
+
+        unfoldEmployee = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("unfoldEmployee")[0];
+        unfoldEmployee.addEventListener("click", (event) => {
+            id = employeeTMP.id;
+            employeeFlexWrapper = document.getElementById("employee-" + id).getElementsByClassName("employee-flex-wrapper")[0];
+            employeeFlexWrapper.classList.toggle("hidden");
+        });
+    }
+}
+
+
+
+// Open Detailed View of Employee
+function openDetails(id = null, editmode = true) {
+    let employeeDetails = document.getElementById("employee-details");
+    let employeeDetailsWrapper = document.getElementsByClassName("detail-wrapper")[0];
+    let employeeForm = document.getElementById("employee-details-form");
+    let formFields = employeeForm.getElementsByTagName("input");
+
+    console.log(employeeDetailsWrapper.scrollTop);
+    employeeDetailsWrapper.scrollTop = 0;
+    console.log(employeeDetailsWrapper.scrollTop);
+    controlInput(formFields, editmode);
+
+    if (id == null) {
+        employeeDetails.getElementsByClassName("fullName")[0].innerHTML = "Neuer Mitarbeiter";
+        employeeForm.reset();
+        Array.from(employeeForm.getElementsByTagName("Input")).forEach(item => item.defaultValue = "");
+        document.getElementById("deleteEmployee").style.display = "none";
+        employeeDetails.classList.add("active");
+        employeeForm.setAttribute("editmode", editmode);
+        document.getElementById("submitEmployee").setAttribute("editmode", editmode);
+    } else {
+        getEmployeeByID(id)
+            .then(response => {
+                let fieldsMap = new Map();
+                Array.prototype.map.call(formFields, function(field) {
+                    fieldsMap[field.getAttribute("Name")] = field;
+                });
+
+                employeeForm.reset();
+                let employeeTMP = new Employee(response);
+                employeeDetails.getElementsByClassName("fullName")[0].innerHTML = employeeTMP.getFullName();
+                for (const [key, value] of Object.entries(employeeTMP)) {
+                    const field = fieldsMap[key];
+                    if (field) {
+                        fieldsMap[key].defaultValue = value;
+                    }
                 }
 
+                sessionStorage.setItem("DetailsCurrentEmployee", employeeTMP);
+                sessionStorage.setItem("DetailsUserID", employeeTMP.id);
 
-                editDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("editDetails")[0];
-                editDetail.addEventListener("click", (event) => {
-                    id = event.target.getAttribute("employee-id");
-                    openDetails(id, true);
-                });
+                employeeForm.reset();
 
-                unfoldEmployee = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("unfoldEmployee")[0];
-                unfoldEmployee.addEventListener("click", (event) => {
-                    id = employeeTMP.id;
-                    employeeFlexWrapper = document.getElementById("employee-" + id).getElementsByClassName("employee-flex-wrapper")[0];
-                    employeeFlexWrapper.classList.toggle("hidden");
-                });
-            }
-        })
-        .catch(err => console.warn(err));
+                document.getElementById("deleteEmployee").style.display = "initial";
+                employeeDetails.classList.add("active");
+                employeeForm.setAttribute("editmode", editmode);
+                document.getElementById("submitEmployee").setAttribute("editmode", editmode);
+            });
+    }
+    return true;
 }
+
+
 
 // Generate Div Element with data from Employee
 function employeeDiv(employee) {
@@ -214,101 +183,19 @@ function employeeDiv(employee) {
     return div;
 }
 
-// Open Detailed View of Employee
-function openDetails(id = null, editmode = true) {
-    let employeeDetails = document.getElementById("employee-details");
-    let employeeForm = document.getElementById("employee-details-form");
-    let formFields = employeeForm.getElementsByTagName("input");
-    controlInput(formFields, editmode);
 
-    if (id == null) {
-        employeeDetails.getElementsByClassName("fullName")[0].innerHTML = "Neuer Mitarbeiter";
-        employeeForm.reset();
-        Array.from(employeeForm.getElementsByTagName("Input")).forEach(item => item.defaultValue = "");
-        employeeDetails.classList.add("active");
-        employeeForm.setAttribute("editmode", editmode);
-        document.getElementById("submitEmployee").setAttribute("editmode", editmode);
-    } else {
-        getEmployeeByID(id)
-            .then(response => {
-                let fieldsMap = new Map();
-                Array.prototype.map.call(formFields, function(field) {
-                    fieldsMap[field.getAttribute("Name")] = field;
-                });
-
-                employeeForm.reset();
-                let employeeTMP = new Employee(response);
-                employeeDetails.getElementsByClassName("fullName")[0].innerHTML = employeeTMP.getFullName();
-                for (const [key, value] of Object.entries(employeeTMP)) {
-                    const field = fieldsMap[key];
-                    if (field) {
-                        fieldsMap[key].defaultValue = value;
-                    }
-                }
-
-                sessionStorage.setItem("DetailsCurrentEmployee", employeeTMP);
-                sessionStorage.setItem("DetailsUserID", employeeTMP.id);
-
-                employeeForm.reset();
-                employeeDetails.classList.add("active");
-                employeeForm.setAttribute("editmode", editmode);
-                document.getElementById("submitEmployee").setAttribute("editmode", editmode);
-            });
-    }
-    return true;
-}
-
-
-
-// General Methods ____________________________________________________________________________________________________________________________________________________________________________________________
-
-// returns NodeElement from HTML-String
-function createElementFromHTML(htmlString) {
-    var div = document.createElement('div');
-    div.innerHTML = htmlString.trim();
-
-    // Change this to div.childNodes to support multiple top-level nodes
-    return div.firstChild;
-}
-
-// 
-function controlInput(inputfields, editmode) {
-    for (field of inputfields) {
-        if (editmode == true) {
-            field.removeAttribute("readonly");
-        } else {
-            field.setAttribute("readonly", true);
-        }
-    }
-}
-
-// convert img to data:URL
-function toDataURL(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-        var reader = new FileReader();
-        reader.onloadend = function() {
-            callback(reader.result);
-        }
-        reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-}
-
-function jumpTo(h) {
-    var url = location.href; //Save down the URL without hash.
-    location.href = "#" + h; //Go to the target element.
-    history.replaceState(null, null, url); //Don't like hashes. Changing it back.
-    console.log("jumping to " + h);
-}
 
 // Prepare Page _______________________________________________________________________________________________________________________________________________________________________________________________
 document.addEventListener("DOMContentLoaded", (event) => {
     console.log("DOM fully loaded and parsed");
 
     setupOverview();
+
+    setupInfoPopup();
+
+    document.getElementById("sortSelect").addEventListener("change", (event) => {
+        setupOverview();
+    })
 
     document.getElementById("closeDetails").addEventListener("click", (event) => {
         event.preventDefault();
@@ -330,16 +217,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("submitEmployee").addEventListener("click", (event) => {
         event.preventDefault();
         let form = document.getElementById("employee-details-form");
-        let formData = new FormData(form);
+
 
         if (sessionStorage.getItem("submitMode") == "New") {
-            createNewEmployee(formData)
+            employee = serializeForm(form);
+            createNewEmployee(employee)
                 .then(response => {
-                    employee = new Employee(response);
                     sessionStorage.removeItem("submitMode");
+                    let allEmployees = JSON.parse(localStorage.getItem("allEmployees"));
+                    allEmployees.push(response);
+                    localStorage.setItem("allEmployees", JSON.stringify(allEmployees));
                     closeDetails();
                     setupOverview()
                 })
+                .catch(err => {
+                    if (err.status == 400) {
+                        console.log("test");
+                        err.response.json().then(errObj => {
+                            console.log(errObj.title);
+                            infoPopup(errObj.title, "error", 5);
+                        });
+                    } else {
+
+                    }
+                });
         } else {
             id = sessionStorage["DetailsUserID"];
             editEmployee(id, formData)
@@ -358,5 +259,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
         }
     });
+
+    document.getElementById("deleteEmployee").addEventListener("click", (event) => {
+        event.preventDefault();
+        let id = sessionStorage.getItem("DetailsUserID");
+        if (confirm("Wollen sie den Mitarbeiter wirklich löschen?")) {
+            deleteEmployee(id)
+                .then(response => {
+                    document.getElementsByClassName("employee-wrapper")[0].removeChild(document.getElementById("employee-" + id));
+                    closeDetails();
+                });
+        }
+    });
+
+    window.onscroll = function() { setDetailsTop() };
+
+    function setDetailsTop() {
+        let nav = document.getElementById("nav");
+        let employeeDetails = document.getElementsByClassName("employee-details")[0];
+
+        let viewportoffset = nav.getBoundingClientRect();
+        let offsetTop = viewportoffset.top;
+        employeeDetails.style.top = (nav.offsetHeight + offsetTop) + "px";
+    }
 
 });

@@ -78,7 +78,8 @@ header {
     top: 0;
     left: 0;
     padding: 8px 15px;
-    width: 100%;
+    width: inherit;
+    margin: 0 auto;
     border-bottom: 1px solid var(--header-b-B-color);
     z-index: 97;
 }
@@ -88,6 +89,14 @@ header h1 {
     position: relative;
     font-size: 1.6em;
     letter-spacing: 2px;
+}
+
+.nav-flex-wrapper {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 69px;
+    z-index: 100;
 }
 
 nav {
@@ -103,7 +112,6 @@ nav {
     padding: 10px 2px;
     border-bottom: 3px solid var(--nav-b-B-color);
     box-shadow: 0 6px 6px -6px var(--nav-box-shadow-color);
-    z-index: 100;
 }
 
 #nav-menu {
@@ -152,6 +160,49 @@ nav {
     padding: 0;
 }
 
+.info-popup {
+    position: sticky;
+    width: 100%;
+    top: calc( 69px - 41px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-shadow: 0 6px 6px -6px #495157;
+    background-color: rgb(255, 207, 51);
+    color: inherit;
+    padding: 6px;
+    font-size: 1.3em;
+    box-shadow: none;
+    z-index: -1;
+    transform: translateY(-100%);
+    transition: transform 1s ease-in;
+}
+
+.info-popup.active {
+    display: flex;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.info-popup i {
+    padding: 4px;
+    font-style: bold;
+}
+
+.info-popup .message {
+    padding-top: 3px;
+}
+
+.info-popup[type="error"] {
+    background-color: rgb(196, 84, 84);
+    color: white;
+}
+
+.info-popup[type="success"] {
+    background-color: rgb(0, 17, 0);
+    color: rgb(231, 231, 231);
+}
+
 #content {
     top: 68px;
     bottom: 18px;
@@ -182,10 +233,23 @@ nav {
     color: #011c3f;
 }
 
+.sortCriteria {
+    text-align: center;
+}
+
+.sortWrapper {
+    position: relative;
+    border: 1px solid var(--employee-border-color);
+    text-align: center;
+    color: var(--employee-txt-color);
+    overflow: hidden;
+    width: 87.5%;
+    transition: all 0.3s ease-in;
+}
+
 .employee-wrapper {
     display: flex;
     flex-direction: row;
-    max-width: calc(100%);
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
@@ -194,7 +258,6 @@ nav {
 .employee {
     position: relative;
     margin: 20px 20px;
-    margin: none;
     background-color: var(--employee-bg-color);
     border: 1px solid var(--employee-border-color);
     border-radius: 10px;
@@ -273,6 +336,7 @@ nav {
 .employee-flex-wrapper.hidden .less-info {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
 }
 
@@ -346,12 +410,12 @@ nav {
 }
 
 .employee-details {
-    display: none;
     position: fixed;
-    width: inherit;
-    max-width: 1920px;
+    top: calc(69px + 46px);
     bottom: 0;
-    top: 69px;
+    display: none;
+    width: 100%;
+    max-width: 1920px;
     background-color: rgba(77, 74, 74, 0.363);
     z-index: 1;
     margin: auto;
@@ -362,14 +426,15 @@ nav {
 }
 
 .detail-wrapper {
-    display: flex;
-    width: 80%;
-    background-color: white;
     margin: auto;
-    min-height: 400px;
+    display: flex;
+    max-width: 92.5%;
+    min-width: 300px;
+    max-height: 95%;
+    background-color: white;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.74);
     z-index: 1;
-    overflow: hidden;
+    overflow: auto;
     border-radius: 25px;
     flex-direction: column;
     align-items: center;
@@ -379,7 +444,9 @@ nav {
     background: var(--employee-border-color);
     color: white;
     font-size: 1.5em;
-    z-index: -1;
+    position: sticky;
+    top: 0;
+    z-index: 2;
     padding: 8px 8px 2px 8px;
     display: flex;
     flex-direction: row;
@@ -399,14 +466,19 @@ nav {
 
 .profile-picture {
     position: relative;
-    overflow: hidden;
     height: 250px;
     width: 250px;
     margin-top: 10px;
 }
 
 .detail-content {
+    display: flex;
+    flex-direction: column;
     flex-grow: 10;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
 }
 
 .profile-picture img {
@@ -454,6 +526,12 @@ nav {
 
 .employee-details-form[editmode=true] .details-data-wrapper input {
     border-bottom: 1px solid #e6904583;
+}
+
+.employee-details-form[editmode=true] .details-data-wrapper input:invalid {
+    border: none;
+    border-bottom: 1px solid rgb(201, 50, 50);
+    background-color: rgba(201, 50, 50, 0.144);
 }
 
 .details-data-wrapper input,
