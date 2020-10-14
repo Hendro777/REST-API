@@ -84,11 +84,13 @@ namespace REST_API
         /* */
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult Patch(string id)
+        public IActionResult EditEmployee(String id, Employee employee)
         {
             Console.WriteLine("PATCH for Employee with ID: " + id);
-            Employee employee = empDB.GetEmployeeById(id);
+            String json = JsonConvert.SerializeObject(employee);
+            Console.WriteLine("GOT THIS: "+json);
 
+            /*
             if (employee == null)
             {
                 Console.WriteLine("Employee not found");
@@ -102,7 +104,9 @@ namespace REST_API
             {
                 return BadRequest();
             }
-            return Ok(employee);
+            */
+
+            return Ok();
         }
 
 

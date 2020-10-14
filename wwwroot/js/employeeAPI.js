@@ -63,10 +63,13 @@ async function getEmployeeByID(id) {
     }
 }
 
-async function editEmployee(id, formdata) {
+async function editEmployee(id, employee) {
     const response = await fetch(window.location.protocol + "//" + window.location.hostname + '/api/employee/' + id, {
         method: 'PATCH',
-        body: formdata
+        body: JSON.stringify(employee),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
 
     if (response.status >= 200 && response.status <= 299) {

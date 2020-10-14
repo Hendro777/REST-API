@@ -71,32 +71,15 @@ namespace REST_API
             return employee;
         }
 
-        public bool EditEmployee(Employee employee, IFormCollection form)
+        public bool EditEmployee(String id, Employee employee)
         {
-            PropertyInfo[] properties = typeof(Employee).GetProperties();
-            NameValueCollection nvc = new NameValueCollection();
-            // musste so unschön gemacht werden, da man mit formdata schlecht umgehen kann
-            JArray jobj = JsonConvert.DeserializeObject<JArray>(JsonConvert.SerializeObject(form));
+            Employee oldEmployee = this.GetEmployeeById(id);
 
-            foreach (var item in jobj)
+            if(oldEmployee == null)
             {
-                nvc.Add(item["Key"].ToString(), item["Value"].First().ToString());
+                return false;
             }
 
-            foreach (PropertyInfo propertyInfo in properties)
-            {
-                var items = nvc.AllKeys.SelectMany(nvc.GetValues, (k, v) => new { key = k, value = v });
-                foreach (var it in items)
-
-                    if ((it.key.First().ToString().ToUpper() + it.key.Substring(1)).Equals(propertyInfo.Name))
-                    {
-                        propertyInfo.SetValue(employee, it.value);
-                    }
-
-            }
-            string json = JsonConvert.SerializeObject(employee);
-            File.WriteAllText(this.Filepath + employee.Id + ".json", json, Encoding.UTF8);
-            Console.WriteLine(employee.ToString() + " successfully edited");
             return true;
         }
 

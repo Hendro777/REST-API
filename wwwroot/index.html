@@ -93,7 +93,9 @@
                 </div>
             </div>
 
-            <div class="sortCriteria">
+            <div id="backToTop"><i class="fas fa-arrow-alt-circle-up button"></i></div>
+
+            <div id="sort-Criteria" class="sort-Criteria">
                 <label for="sortSelect">Sortierung nach</label>
 
                 <select name="sortSelect" id="sortSelect">
@@ -108,9 +110,9 @@
 
             </div>
 
-            <div class="employee-wrapper">
-                <div id="sortWrapper-T" class="sortWrapper">
-                    <div class="sortHeader">TE</div>
+            <!--div class="employee-wrapper">
+                <div id="sort-Wrapper-Prototyp" class="sort-Wrapper">
+                    <div class="sort-Header button"><span class="button">Header <i class="fas fa-chevron-down"></i></span></div>
                     <div id="employee-prototype" class="employee">
                         <div class="employee-header">
                             <div><i employee-id="prototype" class="fas fa-user-circle openDetails button" aria-hidden="true"></i></div>
@@ -151,8 +153,49 @@
                             <div class="actions"><a href="mailto:"><i class="fas fa-envelope-square button" aria-hidden="true"></i></a> <a href="tel:"><i class="fas fa-phone-square-alt button" aria-hidden="true"></i></a></div>
                         </div>
                     </div>
+
+                    <div id="employee-prototype2" class="employee">
+                        <div class="employee-header">
+                            <div><i employee-id="prototype" class="fas fa-user-circle openDetails button" aria-hidden="true"></i></div>
+                            <p class="bold fullName openDetails button " employee-id="prototype"> Proto Typ</p>
+                            <div class="tooltip"><i employee-id="prototype" class="editDetails far fa-edit button" aria-hidden="true"></i> | <i class="unfoldEmployee fas fa-chevron-down button" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="employee-flex-wrapper hidden">
+                            <div class="employee-img openDetails roundimg button"> <img employee-id="prototype" src="https://images.assetsdelivery.com/compings_v2/decade3d/decade3d1406/decade3d140600029.jpg"></div>
+
+                            <div class="employee-data-wrapper">
+                                <div class="employee-data"><label for="firstName">Vorname</label><input name="firstName" value="Proto" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="lastName">Nachname</label><input id="lastName-prototype" name="lastName" value="Typ" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="function">Funktion</label><input id="function-prototype" name="function" value="Prototyp Div" readonly="true">
+                                </div>
+                            </div>
+
+                            <div class="employee-data-wrapper">
+                                <div class="employee-data"><label for="location">Standort</label><input id="location-prototype" name="location" value="" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="email">e-Mail</label><input id="email-prototype" name="email" value="" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="phoneNumber">Telefonnummer</label><input id="phoneNumber-prototype" name="phoneNumber" value="" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="mobileNumber">Mobil</label><input id="mobileNumber-prototype" name="mobileNumber" value="" readonly="true">
+                                </div>
+                            </div>
+                            <div class="less-info">
+                                <div class="employee-data"><label for="function">Funktion</label><input id="function-prototype" name="function" value="Prototyp Div" readonly="true">
+                                </div>
+                                <div class="employee-data"><label for="email">e-Mail</label><input id="email-prototype" name="email" value="" readonly="true"></div>
+                                <div class="employee-data"><label for="phoneNumber">Telefonnummer</label><input id="phoneNumber-prototype" name="phoneNumber" value="" readonly="true"></div>
+                            </div>
+                        </div>
+                        <div class="employee-footer">
+                            <div class="actions"><a href="mailto:"><i class="fas fa-envelope-square button" aria-hidden="true"></i></a> <a href="tel:"><i class="fas fa-phone-square-alt button" aria-hidden="true"></i></a></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div-->
         </div>
         <footer class="footer ">Hendrik Lind &copy;2020</footer>
     </div>

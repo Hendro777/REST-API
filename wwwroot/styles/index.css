@@ -145,6 +145,20 @@ nav {
     background-color: var(--nav-hover-bg--color);
 }
 
+#backToTop {
+    display: none;
+    position: fixed;
+    bottom: 4%;
+    right: 2%;
+    color: #ff5e00be;
+    z-index: 1;
+    font-size: 2em;
+}
+
+#backToTop.show {
+    display: initial;
+}
+
 #popup-menu {
     float: right;
     margin-right: 10px;
@@ -221,6 +235,7 @@ nav {
 
 #create-new-employee {
     margin: 20px auto;
+    width: 87.5%;
 }
 
 #create-new-employee .employee-footer {
@@ -233,20 +248,6 @@ nav {
     color: #011c3f;
 }
 
-.sortCriteria {
-    text-align: center;
-}
-
-.sortWrapper {
-    position: relative;
-    border: 1px solid var(--employee-border-color);
-    text-align: center;
-    color: var(--employee-txt-color);
-    overflow: hidden;
-    width: 87.5%;
-    transition: all 0.3s ease-in;
-}
-
 .employee-wrapper {
     display: flex;
     flex-direction: row;
@@ -255,9 +256,39 @@ nav {
     align-items: stretch;
 }
 
+.sort-Criteria {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.sort-Wrapper {
+    position: relative;
+    text-align: center;
+    color: var(--employee-txt-color);
+    overflow: hidden;
+    width: 87.5%;
+    transition: all 0.3s ease-in;
+}
+
+.sort-Wrapper .sort-Header {
+    border-radius: 0;
+}
+
+.sort-Wrapper.open .sort-Header {
+    border-bottom: 1px solid var(--employee-border-color);
+}
+
+.sort-Wrapper .employee {
+    display: none;
+}
+
+.sort-Wrapper.open .employee {
+    display: inherit;
+}
+
 .employee {
     position: relative;
-    margin: 20px 20px;
+    margin: 20px 0;
     background-color: var(--employee-bg-color);
     border: 1px solid var(--employee-border-color);
     border-radius: 10px;
@@ -267,7 +298,6 @@ nav {
     text-align: left;
     color: var(--employee-txt-color);
     overflow: hidden;
-    width: 87.5%;
     transition: all 0.3s ease-in;
 }
 

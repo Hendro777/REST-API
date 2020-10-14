@@ -38,43 +38,69 @@ async function setupOverview() {
         employeeWrapper.removeChild(employeeWrapper.firstChild);
     }
 
+    // Erzeuge wrapper nach Sortierkriterium
     let currentSortFeature = null;
-    for (employee of allEmployees) {
+    let currentSortDiv = null;
+    for (var i = 0; i < allEmployees.length; i++) {
+        employee = allEmployees[i];
+
         let thisSortFeature = sortFeature(employee);
+
         if (currentSortFeature == null || thisSortFeature != currentSortFeature) {
+            // set new sort feature
             currentSortFeature = thisSortFeature;
-            employeeWrapper.append(document.createTextNode(currentSortFeature));
+
+            // create new sort-div
+            htmlStringDiv = `<div id="sort-Wrapper-${currentSortFeature}" class="sort-Wrapper">
+                                <div class="sort-Header button"><span class="button">${currentSortFeature} <i class="fas fa-chevron-down"></i></span></div>
+                        </div>`;
+
+            currentSortDiv = createElementFromHTML(htmlStringDiv);
+            employeeWrapper.appendChild(currentSortDiv);
         }
 
         let employeeTMP = new Employee(employee);
         let employeeDivTMP = employeeDiv(employeeTMP);
-        employeeWrapper.append(employeeDivTMP);
+        currentSortDiv.append(employeeDivTMP);
 
-        let inputfields = document.getElementsByTagName("input");
+        let inputfields = employeeDivTMP.getElementsByTagName("input");
         controlInput(inputfields, false);
 
-        openDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("openDetails");
-        for (i = 0; i < openDetail.length; i++) {
-            openDetail[i].addEventListener("click", (event) => {
+        openDetail = employeeDivTMP.getElementsByClassName("openDetails");
+        for (let j = 0; j < openDetail.length; j++) {
+            openDetail[j].addEventListener("click", (event) => {
                 id = event.target.getAttribute("employee-id");
                 openDetails(id, false);
             });
         }
 
-
-        editDetail = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("editDetails")[0];
+        editDetail = employeeDivTMP.getElementsByClassName("editDetails")[0];
         editDetail.addEventListener("click", (event) => {
             id = event.target.getAttribute("employee-id");
             openDetails(id, true);
         });
 
-        unfoldEmployee = document.getElementById("employee-" + employeeTMP.id).getElementsByClassName("unfoldEmployee")[0];
+        unfoldEmployee = employeeDivTMP.getElementsByClassName("unfoldEmployee")[0];
         unfoldEmployee.addEventListener("click", (event) => {
             id = employeeTMP.id;
             employeeFlexWrapper = document.getElementById("employee-" + id).getElementsByClassName("employee-flex-wrapper")[0];
             employeeFlexWrapper.classList.toggle("hidden");
         });
     }
+
+    Array.prototype.slice.call(document.getElementsByClassName("sort-Header"), 0).forEach((header) => {
+        header.addEventListener("click", (event) => {
+            sortWrapper = event.currentTarget.parentNode;
+            sortWrapper.classList.toggle("open");
+            sortWrapper.scrollIntoView();
+        });
+    });
+
+    Array.prototype.slice.call(document.getElementsByClassName("sort-Wrapper"), 0).forEach((sortWrapper) => {
+        empDivs = sortWrapper.getElementsByClassName("employee");
+        empDivs[0].style.marginTop = "10px";
+        empDivs[empDivs.length - 1].style.marginBottom = "10px";
+    });
 }
 
 
@@ -193,6 +219,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     setupInfoPopup();
 
+    /*
+    document.getElementById("sort-Wrapper-Prototyp").getElementsByClassName("sort-Header")[0].addEventListener("click", (event) => {
+        sortWrapper = event.currentTarget.parentNode;
+        employees = sortWrapper.getElementsByClassName("employee");
+
+        employees[0].style.marginTop = "10px";
+        employees[employees.length - 1].style.marginBottom = "10px";
+
+        sortWrapper.classList.toggle("open");
+        console.log("toggle");
+
+        sortWrapper.scrollIntoView();
+    });
+    */
+
+    document.getElementById("backToTop").addEventListener("click", (event) => {
+        /*
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0;
+        */
+        scrollToTop();
+    });
+
     document.getElementById("sortSelect").addEventListener("change", (event) => {
         setupOverview();
     })
@@ -217,10 +266,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("submitEmployee").addEventListener("click", (event) => {
         event.preventDefault();
         let form = document.getElementById("employee-details-form");
-
+        let employee = serializeForm(form);
 
         if (sessionStorage.getItem("submitMode") == "New") {
-            employee = serializeForm(form);
             createNewEmployee(employee)
                 .then(response => {
                     sessionStorage.removeItem("submitMode");
@@ -243,7 +291,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 });
         } else {
             id = sessionStorage["DetailsUserID"];
-            editEmployee(id, formData)
+            editEmployee(id, employee)
                 .then(response => {
                     employee = new Employee(response);
                     original = document.getElementById("employee-" + response.id);
@@ -256,6 +304,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
                     originalData.innerHTML = replaceData.innerHTML;
                     originalHeader.innerHTML = employee.firstName + employee.lastName
+
+                    let allEmployees = JSON.parse(localStorage.getItem("allEmployees"));
+                    allEmployees = allEmployees.filter((employee) => {
+                        return employee.id != id;
+                    });
+                    allEmployees.push(response);
+                    localStorage.setItem("allEmployees", JSON.stringify(allEmployees));
+                    closeDetails();
                 });
         }
     });
@@ -266,21 +322,36 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (confirm("Wollen sie den Mitarbeiter wirklich löschen?")) {
             deleteEmployee(id)
                 .then(response => {
-                    document.getElementsByClassName("employee-wrapper")[0].removeChild(document.getElementById("employee-" + id));
+                    let allEmployees = JSON.parse(localStorage.getItem("allEmployees"));
+                    allEmployees = allEmployees.filter((employee) => {
+                        return employee.id != id;
+                    });
+                    localStorage.setItem("allEmployees", JSON.stringify(allEmployees));
+                    empDiv = document.getElementById("employee-" + id);
+                    empDiv.parentNode.removeChild(empDiv);
                     closeDetails();
                 });
         }
     });
 
-    window.onscroll = function() { setDetailsTop() };
-
-    function setDetailsTop() {
+    window.onscroll = function() {
         let nav = document.getElementById("nav");
         let employeeDetails = document.getElementsByClassName("employee-details")[0];
 
         let viewportoffset = nav.getBoundingClientRect();
         let offsetTop = viewportoffset.top;
         employeeDetails.style.top = (nav.offsetHeight + offsetTop) + "px";
-    }
 
+        sort = document.getElementById("sort-Criteria");
+        backToTop = document.getElementById("backToTop");
+        if ((sort.getBoundingClientRect().top - (nav.offsetHeight - sort.offsetHeight)) < 0) {
+            if (!backToTop.classList.contains("show")) {
+                backToTop.classList.add("show");
+            }
+        } else {
+            if (backToTop.classList.contains("show")) {
+                backToTop.classList.remove("show");
+            }
+        }
+    };
 });
